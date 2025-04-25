@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>direwo ai</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    
+    <!-- Correct path to static styles.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Correct path to static script.js -->
+    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+
+  <body>
+    <div class="chat-container">
+      <div class="sidebar">
+        <div class="logo">
+          <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="direwo.ai logo" />
+          <span class="glow-text">direwo.ai</span>
+        </div>
+        <div class="new-chat">
+          <button><i class="fas fa-plus"></i> New chat</button>
+        </div>
+        <div class="chat-history">
+          <div class="history-item active">
+            <i class="fas fa-message"></i>
+            Chat history 1
+          </div>
+          <div class="history-item">
+            <i class="fas fa-message"></i>
+            Chat history 2
+          </div>
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="chat-messages">
+          <div class="message user">
+            <div class="message-content">Hello, how can I help you today?</div>
+          </div>
+          <div class="message assistant">
+            <div class="message-content">I'm direwo.ai, your AI assistant. I'm here to help you with any questions or tasks you have.</div>
+          </div>
+          <div class="message assistant typing hidden">
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-area">
+          <div class="input-container">
+            <textarea placeholder="Send a message..."></textarea>
+            <button class="send-button"><i class="fas fa-paper-plane"></i></button>
+          </div>
+          <div class="disclaimer">
+            direwo.ai can make mistakes. Consider checking important information.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
