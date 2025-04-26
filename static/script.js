@@ -9,7 +9,7 @@ textarea.addEventListener('input', function() {
   this.style.height = Math.min(this.scrollHeight, 200) + 'px';
 });
 
-// Simulate AI typing
+// Simulate AI typing (show and hide)
 function showTypingIndicator() {
   typingIndicator.classList.remove('hidden');
   chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -19,35 +19,47 @@ function hideTypingIndicator() {
   typingIndicator.classList.add('hidden');
 }
 
-// Add new message
+// Add new message (user or assistant)
 function addMessage(content, isUser = true) {
   const messageDiv = document.createElement('div');
   messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
   messageDiv.innerHTML = `<div class="message-content">${content}</div>`;
-  
+
   // Insert before typing indicator
   chatMessages.insertBefore(messageDiv, typingIndicator);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 // Handle send button click
-sendButton.addEventListener('click', () => {
+sendButton.addEventListener('click', async () => {
   const message = textarea.value.trim();
   if (message) {
-    addMessage(message, true);
+    addMessage(message, true); // Add user's message
     textarea.value = '';
     textarea.style.height = '60px';
     
-    // Simulate AI response
+    // Show typing indicator while waiting
     showTypingIndicator();
-    setTimeout(() => {
+    
+    try {
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: message })
+      });
+
+      const data = await response.json();
       hideTypingIndicator();
-      addMessage('This is a simulated AI response.', false);
-    }, 2000);
+      addMessage(data.answer, false); // Add AI's real answer
+    } catch (error) {
+      hideTypingIndicator();
+      addMessage('Error: Could not get response from server.', false);
+      console.error('Error:', error);
+    }
   }
 });
 
-// Handle enter key
+// Handle enter key press (send on Enter)
 textarea.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -56,17 +68,19 @@ textarea.addEventListener('keydown', (e) => {
 });
 
 // Add hover effect to messages
-document.querySelectorAll('.message').forEach(message => {
-  message.addEventListener('mouseenter', () => {
-    message.style.transform = 'translateY(-2px)';
-  });
-  
-  message.addEventListener('mouseleave', () => {
-    message.style.transform = 'translateY(0)';
-  });
+document.addEventListener('mouseover', (e) => {
+  if (e.target.closest('.message')) {
+    e.target.closest('.message').style.transform = 'translateY(-2px)';
+  }
 });
 
-// Ensure all messages are visible on load
+document.addEventListener('mouseout', (e) => {
+  if (e.target.closest('.message')) {
+    e.target.closest('.message').style.transform = 'translateY(0)';
+  }
+});
+
+// Ensure all messages visible on page load
 document.addEventListener('DOMContentLoaded', () => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });

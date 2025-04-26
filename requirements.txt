@@ -1,2 +1,7 @@
 flask
 requests
+langchain
+huggingface_hub
+flask_cors
+langchain_community
+
