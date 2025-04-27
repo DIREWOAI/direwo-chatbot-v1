@@ -1,7 +1,9 @@
-flask
-requests
+transformers
+torch
+accelerate
+huggingface_hub>=0.20.0
 langchain
-huggingface_hub
+flask
 flask_cors
-langchain_community
+python-dotenv
 
